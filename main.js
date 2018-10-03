@@ -43,9 +43,14 @@ var phi1kz_value = 0;
 var phi2xx_value = 0;
 var phi2kz_value = 0;
 
+var z1x = 0;
+var z1k = 0;
+var z2x = 0;
+var z2k = 0;
+var z = 0;
+
 function u1x() {
     u1x_value = math.complex(this.value);
-    console.log(math.add(u1x_value, 1));
     update();
 }
 
@@ -110,25 +115,32 @@ function cos2kz() {
 }
 
 function change1xx() {
-    phi1xx_value = 180 - phi1xx_value;
+    phi1xx_value = getNegativeDeg(phi1xx_value);
     update();
 }
 
 function change1kz() {
+    phi1kz_value = getNegativeDeg(phi1kz_value);
     update();
 }
 
 function change2xx() {
+    phi2xx_value = getNegativeDeg(phi2xx_value);
     update();
 }
 
 function change2kz() {
+    phi2kz_value = getNegativeDeg(phi2kz_value);
     update();
+}
+
+function getNegativeDeg(deg) {
+    return 180 - deg;
 }
 
 function update() {
     updatePhis();
-
+    setZs();
 }
 
 degrees = function(radians) {
@@ -143,4 +155,8 @@ function updatePhis() {
     document.getElementById("phi1kz").innerHTML = phi1kz_value + " град";
     document.getElementById("phi2xx").innerHTML = phi2xx_value + " град";
     document.getElementById("phi2kz").innerHTML = phi2kz_value + " град";
+}
+
+function setZs() {
+
 }
