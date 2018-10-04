@@ -49,43 +49,48 @@ var z2x = 0;
 var z2k = 0;
 var z = 0;
 
+var a11 = 0;
+var a12 = 0;
+var a21 = 0;
+var a22 = 0;
+
 function u1x() {
-    u1x_value = math.complex(this.value);
+    u1x_value = this.value;
     update();
 }
 
 function i1x() {
-    i1x_value = math.complex(this.value);
+    i1x_value = this.value;
     update();
 }
 
 function u2x() {
-    u2x_value = math.complex(this.value);
+    u2x_value = this.value;
     update();
 }
 
 function i2x() {
-    i2x_value = math.complex(this.value);
+    i2x_value = this.value;
     update();
 }
 
 function u1k() {
-    u1k_value = math.complex(this.value);
+    u1k_value = this.value;
     update();
 }
 
 function i1k() {
-    i1k_value = math.complex(this.value);
+    i1k_value = this.value;
     update();
 }
 
 function u2k() {
-    u2k_value = math.complex(this.value);
+    u2k_value = this.value;
     update();
 }
 
 function i2k() {
-    i2k_value = math.complex(this.value);
+    i2k_value = this.value;
     update();
 }
 
@@ -140,7 +145,9 @@ function getNegativeDeg(deg) {
 
 function update() {
     updatePhis();
-    setZs();
+
+    calcZs();
+    showZs();
 }
 
 degrees = function(radians) {
@@ -149,14 +156,66 @@ degrees = function(radians) {
     return math.round(deg, 5)
 };
 
+radians = function(degrees) {
+    return degrees * Math.PI / 180;
+};
 
-function updatePhis() {
-    document.getElementById("phi1xx").innerHTML = phi1xx_value + " град";
-    document.getElementById("phi1kz").innerHTML = phi1kz_value + " град";
-    document.getElementById("phi2xx").innerHTML = phi2xx_value + " град";
-    document.getElementById("phi2kz").innerHTML = phi2kz_value + " град";
+basicFormFromPolar = function(module, degrees) {
+    return math.type.Complex.fromPolar(module, radians(degrees))
 }
 
-function setZs() {
+round = function(n, length = 5) {
+    return math.round(n, length)
+}
 
+function updatePhis() {
+    var ending = "°";
+    document.getElementById("phi1xx").innerHTML = round(phi1xx_value) + ending;
+    document.getElementById("phi1kz").innerHTML = round(phi1kz_value) + ending;
+    document.getElementById("phi2xx").innerHTML = round(phi2xx_value) + ending;
+    document.getElementById("phi2kz").innerHTML = round(phi2kz_value) + ending;
+}
+
+function calcZs() {
+    z1x = basicFormFromPolar(u1x_value / i1x_value, phi1xx_value);
+    z1k = basicFormFromPolar(u1k_value / i1k_value, phi1kz_value);
+    z2x = basicFormFromPolar(u2x_value / i2x_value, phi2xx_value);
+    z2k = basicFormFromPolar(u2k_value / i2k_value, phi2kz_value);
+    z = math.subtract(z1x, z1k);
+    z = math.multiply(z2x, z);
+    z = math.sqrt(z);
+
+    a11 = math.divide(z1x, z);
+    a12 = math.divide(math.multiply(z1k, z2x), z);
+    a21 = math.divide(1, z);
+    a22 = math.divide(z2x, z);
+
+    zt1 = math.divide(math.subtract(a11, 1), a21);
+    zt2 = math.divide(math.subtract(a22, 1), a21);
+    zt3 = math.divide(1, a21);
+    zp4 = a12;
+    zp5 = math.divide(a12, math.subtract(a22, 1));
+    zp6 = math.divide(a12, math.subtract(a11, 1));
+    z1s = math.sqrt(math.multiply(z1x, z1k));
+    z2s = math.sqrt(math.multiply(z2x, z2k));
+}
+
+function showZs() {
+    document.getElementById("z1x").innerHTML = round(z1x);
+    document.getElementById("z1k").innerHTML = round(z1k);
+    document.getElementById("z2x").innerHTML = round(z2x);
+    document.getElementById("z2k").innerHTML = round(z2k);
+    document.getElementById("z").innerHTML = round(z);
+    document.getElementById("a11").innerHTML = round(a11);
+    document.getElementById("a12").innerHTML = round(a12);
+    document.getElementById("a21").innerHTML = round(a21);
+    document.getElementById("a22").innerHTML = round(a22);
+    document.getElementById("zt1").innerHTML = round(zt1);
+    document.getElementById("zt2").innerHTML = round(zt2);
+    document.getElementById("zt3").innerHTML = round(zt3);
+    document.getElementById("zp4").innerHTML = round(zp4);
+    document.getElementById("zp5").innerHTML = round(zp5);
+    document.getElementById("zp6").innerHTML = round(zp6);
+    document.getElementById("z1s").innerHTML = round(z1s);
+    document.getElementById("z2s").innerHTML = round(z2s);
 }
