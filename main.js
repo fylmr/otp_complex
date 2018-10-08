@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelector('#u1x').addEventListener('input', u1x);
     document.querySelector('#i1x').addEventListener('input', i1x);
@@ -140,7 +140,7 @@ function change2kz() {
 }
 
 function getNegativeDeg(deg) {
-    return 180 - deg;
+    return (-1) * deg;
 }
 
 function update() {
@@ -150,21 +150,21 @@ function update() {
     showZs();
 }
 
-degrees = function(radians) {
+degrees = function (radians) {
     var fl = parseFloat(radians);
     var deg = fl * 180 / Math.PI;
     return math.round(deg, 5)
 };
 
-radians = function(degrees) {
+radians = function (degrees) {
     return degrees * Math.PI / 180;
 };
 
-basicFormFromPolar = function(module, degrees) {
+basicFormFromPolar = function (module, degrees) {
     return math.type.Complex.fromPolar(module, radians(degrees))
 }
 
-round = function(n, length = 5) {
+round = function (n, length = 5) {
     return math.round(n, length)
 }
 
